@@ -197,12 +197,7 @@
 
 <script>
   const params = new URLSearchParams(window.location.search);
-  const rid = params.get('rid');
-
-  // Token gate — show a blank page to crawlers with no rid parameter
-  if (!rid) {
-    document.getElementById('wrapper').style.display = 'none';
-  }
+  const rid = params.get('rid'); // kept for GoPhish tracking
 
   function handleSubmit(e) {
     e.preventDefault();
